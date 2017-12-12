@@ -5,10 +5,8 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import me.whoarym.daocon.model.Author;
@@ -85,7 +83,7 @@ public class JsonDataContainer {
             modelBook.setPublisher(modelPublisherMap.get(jsonBook.getPublisher()));
 
             // fill tags
-            Set<Tag> bookTags = new HashSet<>();
+            List<Tag> bookTags = new ArrayList<>();
             for (String tag : jsonBook.getTags()) {
                 if (!modelTagMap.containsKey(tag)) {
                     Tag sqlTag = factory.createTag();

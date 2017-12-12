@@ -3,7 +3,7 @@ package me.whoarym.daocon.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.Set;
+import java.util.List;
 
 public interface Book {
     int getId();
@@ -18,8 +18,8 @@ public interface Book {
     void setAuthor(@NonNull Author author);
     @NonNull Publisher getPublisher();
     void setPublisher(@NonNull Publisher publisher);
-    @NonNull Set<? extends Tag> getTags();
-    void setTags(@NonNull Set<? extends Tag> tags);
+    @NonNull List<? extends Tag> getTags();
+    void setTags(@NonNull List<? extends Tag> tags);
     @Nullable Owner getOwner();
     void setOwner(@Nullable Owner owner);
 }

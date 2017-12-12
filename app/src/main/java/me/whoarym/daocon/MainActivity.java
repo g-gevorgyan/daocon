@@ -18,6 +18,10 @@ import me.whoarym.daocon.measure.MeasureAsyncTask;
 import me.whoarym.daocon.measure.MeasureListener;
 import me.whoarym.daocon.model.Dao;
 import me.whoarym.daocon.model.ModelFactory;
+import me.whoarym.daocon.model.greendao.DaoSession;
+import me.whoarym.daocon.model.greendao.GreenDao;
+import me.whoarym.daocon.model.greendao.GreenModelFactory;
+import me.whoarym.daocon.model.greendao.GreenSimpleDao;
 import me.whoarym.daocon.model.json.JsonDataContainer;
 import me.whoarym.daocon.model.room.RoomDaoDatabase;
 import me.whoarym.daocon.model.room.RoomModelFactory;
@@ -30,20 +34,22 @@ import me.whoarym.daocon.model.sqlite.trivial.SqlTrivialDao;
 public class MainActivity extends Activity {
 
     @BindView(R.id.dao_spinner)
-    Spinner mDaoSpinner;
+    Spinner  mDaoSpinner;
     @BindView(R.id.start_button)
-    Button mStartButton;
+    Button   mStartButton;
     @BindView(R.id.result)
     TextView mResult;
 
     @NonNull
-    private SqlTrivialDao mSqlTrivialDao;
+    private SqlTrivialDao    mSqlTrivialDao;
     @NonNull
-    private SqlOptimizedDao mSqlOptimizedDao;
+    private SqlOptimizedDao  mSqlOptimizedDao;
     @NonNull
-    private RoomTrivialDao mRoomTrivialDao;
+    private RoomTrivialDao   mRoomTrivialDao;
     @NonNull
     private RoomOptimizedDao mRoomOptimizedDao;
+    @NonNull
+    private GreenDao         mGreenDao;
 
     private int mSelectedDao;
 
@@ -71,6 +77,15 @@ public class MainActivity extends Activity {
         RoomDaoDatabase roomDb = ((DaoconApp) getApplication()).getRoomDb();
         mRoomTrivialDao = new RoomTrivialDao(roomDb.getSimpleDao(), roomDb.getBookTrivialDao());
         mRoomOptimizedDao = new RoomOptimizedDao(roomDb.getSimpleDao(), roomDb.getBookOptimizedDao());
+
+        DaoSession daoSession = ((DaoconApp) getApplication()).getDaoSession();
+        mGreenDao = new GreenDao(new GreenSimpleDao(daoSession.getGreenAuthorDao(),
+                daoSession.getGreenBookDao(),
+                daoSession.getGreenBook2TagDao(),
+                daoSession.getGreenOwnerDao(),
+                daoSession.getGreenPublisherDao(),
+                daoSession.getGreenTagDao())
+        );
     }
 
     @SuppressWarnings("unused")
@@ -88,6 +103,9 @@ public class MainActivity extends Activity {
             case 0:
             case 1:
                 modelFactory = new SqliteModelFactory();
+                break;
+            case 4:
+                modelFactory = new GreenModelFactory();
                 break;
             default:
                 modelFactory = new RoomModelFactory();
@@ -107,23 +125,24 @@ public class MainActivity extends Activity {
                 return mRoomTrivialDao;
             case 3:
                 return mRoomOptimizedDao;
+            case 4:
+                return mGreenDao;
         }
         return mSqlTrivialDao;
     }
 
     private AdapterView.OnItemSelectedListener mDaoItemsListener =
-            new AdapterView.OnItemSelectedListener()
-    {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            mSelectedDao = position;
-        }
+            new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mSelectedDao = position;
+                }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-            mSelectedDao = 0;
-        }
-    };
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    mSelectedDao = 0;
+                }
+            };
 
     private MeasureListener mMeasureListener = new MeasureListener() {
         @Override

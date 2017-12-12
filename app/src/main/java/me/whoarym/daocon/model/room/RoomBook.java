@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.Set;
+import java.util.List;
 
 import me.whoarym.daocon.model.Author;
 import me.whoarym.daocon.model.Book;
@@ -73,7 +73,7 @@ public class RoomBook implements Book {
     private RoomOwner mOwner;
 
     @Ignore
-    private Set<RoomTag> mTags;
+    private List<RoomTag> mTags;
 
     @Override
     public int getId() {
@@ -159,13 +159,13 @@ public class RoomBook implements Book {
 
     @NonNull
     @Override
-    public Set<? extends Tag> getTags() {
+    public List<? extends Tag> getTags() {
         return mTags;
     }
 
     @Override
-    public void setTags(@NonNull Set<? extends Tag> tags) {
-        mTags = (Set<RoomTag>) tags;
+    public void setTags(@NonNull List<? extends Tag> tags) {
+        mTags = (List<RoomTag>) tags;
     }
 
     @Nullable

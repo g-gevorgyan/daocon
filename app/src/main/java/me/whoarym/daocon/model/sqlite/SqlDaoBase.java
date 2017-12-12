@@ -9,9 +9,7 @@ import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import me.whoarym.daocon.model.Author;
 import me.whoarym.daocon.model.Book;
@@ -222,7 +220,7 @@ public abstract class SqlDaoBase implements Dao {
         }
         builder.append(");");
 
-        SparseArray<Set<Tag>> book2tag = new SparseArray<>(books.size());
+        SparseArray<List<Tag>> book2tag = new SparseArray<>(books.size());
         try (Cursor cursor = mDb.rawQuery(builder.toString(), null)) {
             while (cursor.moveToNext()) {
                 TagInfo tagInfo = getTagInfo(cursor);
@@ -231,7 +229,7 @@ public abstract class SqlDaoBase implements Dao {
 
                 if (bookId != null && tag != null) {
                     if (book2tag.get(bookId) == null) {
-                        book2tag.append(bookId, new HashSet<>());
+                        book2tag.append(bookId, new ArrayList<>());
                     }
                     book2tag.get(bookId).add(tag);
                 }
@@ -239,9 +237,9 @@ public abstract class SqlDaoBase implements Dao {
         }
 
         for (Book book : books) {
-            Set<Tag> tags = book2tag.get(book.getId());
+            List<Tag> tags = book2tag.get(book.getId());
             if (tags == null) {
-                book.setTags(Collections.emptySet());
+                book.setTags(Collections.emptyList());
             } else {
                 book.setTags(tags);
             }

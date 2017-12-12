@@ -7,5 +7,6 @@
         <item>SQL optimized</item>
         <item>ROOM trivial</item>
         <item>ROOM optimized</item>
+        <item>GreenDao</item>
     </string-array>
 </resources>

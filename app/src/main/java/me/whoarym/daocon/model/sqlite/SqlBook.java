@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.Set;
+import java.util.List;
 
 import me.whoarym.daocon.model.Author;
 import me.whoarym.daocon.model.Book;
@@ -22,7 +22,7 @@ public class SqlBook implements Book {
     private int mYear;
     private SqlAuthor mAuthor;
     private SqlPublisher mPublisher;
-    private Set<SqlTag> mTags;
+    private List<SqlTag> mTags;
     private SqlOwner mOwner;
 
     @Override
@@ -91,13 +91,13 @@ public class SqlBook implements Book {
 
     @Override
     @NonNull
-    public Set<? extends Tag> getTags() {
+    public List<? extends Tag> getTags() {
         return mTags;
     }
 
     @Override
-    public void setTags(@NonNull Set<? extends Tag> tags) {
-        mTags = (Set<SqlTag>) tags;
+    public void setTags(@NonNull List<? extends Tag> tags) {
+        mTags = (List<SqlTag>) tags;
     }
 
     @Override

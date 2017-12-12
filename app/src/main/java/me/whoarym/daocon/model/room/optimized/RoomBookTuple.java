@@ -7,9 +7,7 @@ import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import me.whoarym.daocon.model.room.RoomAuthor;
 import me.whoarym.daocon.model.room.RoomBook;
@@ -44,10 +42,10 @@ class RoomBookTuple {
 
     static List<RoomBook> convert(@NonNull List<RoomBookTuple> bookTuples,
                                   @NonNull List<RoomBookTagTuple> tagTuples) {
-        SparseArray<Set<RoomTag>> book2tags = new SparseArray<>();
+        SparseArray<List<RoomTag>> book2tags = new SparseArray<>();
         for (RoomBookTagTuple tuple : tagTuples) {
             if (book2tags.get(tuple.mBookId) == null) {
-                book2tags.append(tuple.mBookId, new HashSet<>());
+                book2tags.append(tuple.mBookId, new ArrayList<>());
             }
             book2tags.get(tuple.mBookId).add(tuple.getTag());
         }
@@ -74,9 +72,9 @@ class RoomBookTuple {
                 book.setOwner(owner);
             }
 
-            Set<RoomTag> tags = book2tags.get(book.getId());
+            List<RoomTag> tags = book2tags.get(book.getId());
             if (tags == null) {
-                book.setTags(Collections.emptySet());
+                book.setTags(Collections.emptyList());
             } else {
                 book.setTags(tags);
             }

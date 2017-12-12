@@ -67,11 +67,11 @@ public class RoomTrivialDao extends RoomDaoBase {
         }
 
         // fetch and set tags
-        SparseArray<Set<RoomTag>> tagSet = RoomBookTagTuple.remap(mBookDao.getBookTags(booksIds));
+        SparseArray<List<RoomTag>> tagSet = RoomBookTagTuple.remap(mBookDao.getBookTags(booksIds));
         for (RoomBook book : result) {
-            Set<RoomTag> tags = tagSet.get(book.getId());
+            List<RoomTag> tags = tagSet.get(book.getId());
             if (tags == null) {
-                book.setTags(Collections.emptySet());
+                book.setTags(Collections.emptyList());
             } else {
                 book.setTags(tags);
             }
